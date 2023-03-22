@@ -70,7 +70,7 @@ const App: FC = () => {
 			const nearX = boxesEntries
 				.filter(([, box]) => {
 					return (
-						box.x + box.width <= x &&
+						box.x + box.width <= x + snapDistance &&
 						box.x + box.width >= x - snapDistance &&
 						box.y >= y - snapDistance &&
 						box.y <= y + snapDistance
@@ -83,7 +83,7 @@ const App: FC = () => {
 			const nearEndX = boxesEntries
 				.filter(([, box]) => {
 					return (
-						box.x >= endX &&
+						box.x >= endX - snapDistance &&
 						box.x < endX + snapDistance &&
 						box.y >= y - snapDistance &&
 						box.y <= y + snapDistance
