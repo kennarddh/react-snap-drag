@@ -80,10 +80,32 @@ const App: FC = () => {
 					(a, b) => a[1].x + a[1].width / 2 - b[1].x + b[1].width / 2
 				)[0] as [string, IBox] | undefined
 
+			const nearX = boxesEntries
+				.filter(([, box]) => {
+					return (
+						box.x + box.width <= x &&
+						box.x + box.width >= x - snapDistance &&
+						box.y >= y - snapDistance &&
+						box.y <= y + snapDistance
+					)
+				})
+				.sort(
+					(a, b) => a[1].x + a[1].width / 2 - b[1].x + b[1].width / 2
+				)[0] as [string, IBox] | undefined
+
 			console.log({ nearCenter, nearX })
 
 			if (nearCenter) {
 				UpdateBox(item.id, { x: nearCenter[1].x, y: nearCenter[1].y })
+
+				return
+			}
+
+			if (nearX) {
+				UpdateBox(item.id, {
+					x: nearX[1].x + nearX[1].width,
+					y: nearX[1].y,
+				})
 
 				return
 			}
