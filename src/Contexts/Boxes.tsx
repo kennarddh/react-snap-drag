@@ -52,3 +52,5 @@ export const BoxesProvider: FC<{ children: ReactNode }> = ({ children }) => {
 		</BoxesContext.Provider>
 	)
 }
+
+export default BoxesContext
