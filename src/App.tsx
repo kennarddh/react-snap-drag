@@ -80,11 +80,11 @@ const App: FC = () => {
 					(a, b) => a[1].x + a[1].width / 2 - b[1].x + b[1].width / 2
 				)[0] as [string, IBox] | undefined
 
-			const nearX = boxesEntries
+			const nearEndX = boxesEntries
 				.filter(([, box]) => {
 					return (
-						box.x + box.width <= x &&
-						box.x + box.width >= x - snapDistance &&
+						box.x >= endX &&
+						box.x < endX + snapDistance &&
 						box.y >= y - snapDistance &&
 						box.y <= y + snapDistance
 					)
@@ -93,7 +93,7 @@ const App: FC = () => {
 					(a, b) => a[1].x + a[1].width / 2 - b[1].x + b[1].width / 2
 				)[0] as [string, IBox] | undefined
 
-			console.log({ nearCenter, nearX })
+			console.log({ nearCenter, nearX, nearEndX })
 
 			if (nearCenter) {
 				UpdateBox(item.id, { x: nearCenter[1].x, y: nearCenter[1].y })
@@ -106,6 +106,15 @@ const App: FC = () => {
 					x: nearX[1].x + nearX[1].width,
 					y: nearX[1].y,
 				})
+
+				return
+			}
+
+			if (nearEndX) {
+				UpdateBox(item.id, prev => ({
+					x: nearEndX[1].x - prev.width,
+					y: nearEndX[1].y,
+				}))
 
 				return
 			}
