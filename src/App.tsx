@@ -9,11 +9,12 @@ import useBoxes from 'Hooks/useBoxes'
 import { IBoxItem } from 'Types'
 
 import { Container } from './AppStyles'
+import { IBox } from 'Contexts/Boxes'
 
 const App: FC = () => {
 	const PrevDeltaRef = useRef<XYCoord | null>(null)
 
-	const { Boxes, UpdateBox } = useBoxes()
+	const { Boxes, BoxesRef, UpdateBox } = useBoxes()
 
 	const [, drop] = useDrop<IBoxItem>(() => ({
 		accept: 'Box',
@@ -33,8 +34,46 @@ const App: FC = () => {
 
 			PrevDeltaRef.current = { x: deltaX, y: deltaY }
 		},
-		drop() {
+		drop(item) {
 			PrevDeltaRef.current = { x: 0, y: 0 }
+
+			const snapDistance = 15
+
+			const { x, y, width, height } = BoxesRef.current[item.id]
+
+			const endX = x + width
+			const endY = y + height
+
+			const boxesEntries = Object.entries(BoxesRef.current).filter(
+				([id]) => id !== item.id
+			)
+
+			const nearCenter = boxesEntries
+				.filter(([, box]) => {
+					const centerX = x + width / 2
+					const targetCenterX = box.x + box.width / 2
+
+					const centerY = y + height / 2
+					const targetCenterY = box.y + box.height / 2
+
+					return (
+						centerX >= targetCenterX - snapDistance &&
+						centerX <= targetCenterX + snapDistance &&
+						centerY >= targetCenterY - snapDistance &&
+						centerY <= targetCenterY + snapDistance
+					)
+				})
+				.sort(
+					(a, b) => a[1].x + a[1].width / 2 - b[1].x + b[1].width / 2
+				)[0] as [string, IBox] | undefined
+
+			console.log({ nearCenter })
+
+			if (nearCenter) {
+				UpdateBox(item.id, { x: nearCenter[1].x, y: nearCenter[1].y })
+
+				return
+			}
 		},
 	}))
 

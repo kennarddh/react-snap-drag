@@ -27,7 +27,9 @@ const Box: FC<{ id: string }> = ({ id }) => {
 				top: Boxes[id].y,
 				left: Boxes[id].x,
 			}}
-		/>
+		>
+			·
+		</Container>
 	)
 }
 

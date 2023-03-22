@@ -1,11 +1,22 @@
 /* eslint-disable security/detect-object-injection */
-import { FC, createContext, ReactNode, useCallback, useState } from 'react'
+import {
+	FC,
+	createContext,
+	ReactNode,
+	useCallback,
+	useState,
+	useRef,
+	useEffect,
+	MutableRefObject,
+} from 'react'
 
 import { IValueOrFactory } from 'Types'
 
-interface IBox {
+export interface IBox {
 	x: number
 	y: number
+	width: number
+	height: number
 }
 
 type IUpdateBox = (
@@ -16,11 +27,13 @@ type IUpdateBox = (
 interface IBoxesContext {
 	UpdateBox: IUpdateBox
 	Boxes: Record<string, IBox>
+	BoxesRef: MutableRefObject<Record<string, IBox>>
 }
 
 const BoxesContext = createContext<IBoxesContext>({
 	UpdateBox: () => undefined,
 	Boxes: {},
+	BoxesRef: { current: {} },
 })
 
 export const BoxesProvider: FC<{ children: ReactNode }> = ({ children }) => {
@@ -28,12 +41,24 @@ export const BoxesProvider: FC<{ children: ReactNode }> = ({ children }) => {
 		'813ea7e5-6768-42ed-a037-2abda5c59984': {
 			x: 100,
 			y: 100,
+			width: 200,
+			height: 200,
 		},
 		'741fca7d-3788-4c48-a5cc-fc3b2e34b237': {
 			x: 400,
 			y: 100,
+			width: 200,
+			height: 200,
+		},
+		'9168b9ed-1306-4318-b905-bd4dd39fc7cb': {
+			x: 700,
+			y: 100,
+			width: 200,
+			height: 200,
 		},
 	})
+
+	const BoxesRef = useRef<Record<string, IBox>>({})
 
 	const UpdateBox: IUpdateBox = useCallback((id, box) => {
 		SetBoxes(prev => {
@@ -55,8 +80,12 @@ export const BoxesProvider: FC<{ children: ReactNode }> = ({ children }) => {
 		})
 	}, [])
 
+	useEffect(() => {
+		BoxesRef.current = Boxes
+	}, [Boxes])
+
 	return (
-		<BoxesContext.Provider value={{ Boxes, UpdateBox }}>
+		<BoxesContext.Provider value={{ Boxes, UpdateBox, BoxesRef }}>
 			{children}
 		</BoxesContext.Provider>
 	)
