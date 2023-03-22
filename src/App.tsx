@@ -44,16 +44,16 @@ const App: FC = () => {
 			const endX = x + width
 			const endY = y + height
 
+			const centerX = x + width / 2
+			const centerY = y + height / 2
+
 			const boxesEntries = Object.entries(BoxesRef.current).filter(
 				([id]) => id !== item.id
 			)
 
 			const nearCenter = boxesEntries
 				.filter(([, box]) => {
-					const centerX = x + width / 2
 					const targetCenterX = box.x + box.width / 2
-
-					const centerY = y + height / 2
 					const targetCenterY = box.y + box.height / 2
 
 					return (
@@ -67,7 +67,20 @@ const App: FC = () => {
 					(a, b) => a[1].x + a[1].width / 2 - b[1].x + b[1].width / 2
 				)[0] as [string, IBox] | undefined
 
-			console.log({ nearCenter })
+			const nearX = boxesEntries
+				.filter(([, box]) => {
+					return (
+						box.x + box.width <= x &&
+						box.x + box.width >= x - snapDistance &&
+						box.y >= y - snapDistance &&
+						box.y <= y + snapDistance
+					)
+				})
+				.sort(
+					(a, b) => a[1].x + a[1].width / 2 - b[1].x + b[1].width / 2
+				)[0] as [string, IBox] | undefined
+
+			console.log({ nearCenter, nearX })
 
 			if (nearCenter) {
 				UpdateBox(item.id, { x: nearCenter[1].x, y: nearCenter[1].y })
