@@ -107,7 +107,21 @@ const App: FC = () => {
 						a[1].y + a[1].height / 2 - b[1].y + b[1].height / 2
 				)[0] as [string, IBox] | undefined
 
-			console.log({ nearCenter, nearX, nearEndX, nearY })
+			const nearEndY = boxesEntries
+				.filter(([, box]) => {
+					return (
+						box.y >= endY - snapDistance &&
+						box.y <= endY + snapDistance &&
+						box.x >= x - snapDistance &&
+						box.x <= x + snapDistance
+					)
+				})
+				.sort(
+					(a, b) =>
+						a[1].y + a[1].height / 2 - b[1].y + b[1].height / 2
+				)[0] as [string, IBox] | undefined
+
+			console.log({ nearCenter, nearX, nearEndX, nearY, nearEndY })
 
 			if (nearCenter) {
 				UpdateBox(item.id, { x: nearCenter[1].x, y: nearCenter[1].y })
@@ -137,6 +151,15 @@ const App: FC = () => {
 				UpdateBox(item.id, {
 					x: nearY[1].x,
 					y: nearY[1].y + nearY[1].height,
+				})
+
+				return
+			}
+
+			if (nearEndY) {
+				UpdateBox(item.id, {
+					x: nearEndY[1].x,
+					y: nearEndY[1].y - nearEndY[1].height,
 				})
 
 				return
