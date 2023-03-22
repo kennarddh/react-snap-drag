@@ -24,7 +24,16 @@ const BoxesContext = createContext<IBoxesContext>({
 })
 
 export const BoxesProvider: FC<{ children: ReactNode }> = ({ children }) => {
-	const [Boxes, SetBoxes] = useState<Record<string, IBox>>({})
+	const [Boxes, SetBoxes] = useState<Record<string, IBox>>({
+		'813ea7e5-6768-42ed-a037-2abda5c59984': {
+			x: 100,
+			y: 100,
+		},
+		'741fca7d-3788-4c48-a5cc-fc3b2e34b237': {
+			x: 400,
+			y: 100,
+		},
+	})
 
 	const UpdateBox: IUpdateBox = useCallback((id, box) => {
 		SetBoxes(prev => {
