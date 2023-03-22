@@ -124,7 +124,16 @@ const App: FC = () => {
 			console.log({ nearCenter, nearX, nearEndX, nearY, nearEndY })
 
 			if (nearCenter) {
-				UpdateBox(item.id, { x: nearCenter[1].x, y: nearCenter[1].y })
+				UpdateBox(item.id, prev => ({
+					x:
+						nearCenter[1].x +
+						nearCenter[1].width / 2 -
+						prev.width / 2,
+					y:
+						nearCenter[1].y +
+						nearCenter[1].height / 2 -
+						prev.height / 2,
+				}))
 
 				return
 			}

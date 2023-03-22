@@ -26,6 +26,8 @@ const Box: FC<{ id: string }> = ({ id }) => {
 			style={{
 				top: Boxes[id].y,
 				left: Boxes[id].x,
+				width: Boxes[id].width,
+				height: Boxes[id].height,
 			}}
 		>
 			·
