@@ -45,8 +45,8 @@ export const BoxesProvider: FC<{ children: ReactNode }> = ({ children }) => {
 			height: 200,
 		},
 		'741fca7d-3788-4c48-a5cc-fc3b2e34b237': {
-			x: 500,
-			y: 200,
+			x: 400,
+			y: 400,
 			width: 200,
 			height: 200,
 		},
