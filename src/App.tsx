@@ -46,14 +46,13 @@ const App: FC = () => {
 			)
 
 			const nearCenter = boxesEntries
-				.filter(([, box]) => {
-					return (
+				.filter(
+					([, box]) =>
 						x >= box.x - snapDistance &&
 						x <= box.x + snapDistance &&
 						y >= box.y - snapDistance &&
 						y <= box.y + snapDistance
-					)
-				})
+				)
 				.sort((a, b) => a[1].x - b[1].x)[0] as
 				| [string, IBox]
 				| undefined
@@ -72,44 +71,41 @@ const App: FC = () => {
 				| undefined
 
 			const nearEndX = boxesEntries
-				.filter(([, box]) => {
-					return (
+				.filter(
+					([, box]) =>
 						box.x - box.width / 2 >= x + width / 2 - snapDistance &&
 						box.x - box.width / 2 <= x + width / 2 + snapDistance &&
 						box.y >= y - snapDistance &&
 						box.y <= y + snapDistance
-					)
-				})
+				)
 				.sort((a, b) => a[1].x - b[1].x)[0] as
 				| [string, IBox]
 				| undefined
 
 			const nearY = boxesEntries
-				.filter(([, box]) => {
-					return (
+				.filter(
+					([, box]) =>
 						box.y + box.height / 2 <=
 							y - height / 2 + snapDistance &&
 						box.y + box.height / 2 >=
 							y - height / 2 - snapDistance &&
 						box.x >= x - snapDistance &&
 						box.x <= x + snapDistance
-					)
-				})
+				)
 				.sort((a, b) => a[1].y - b[1].y)[0] as
 				| [string, IBox]
 				| undefined
 
 			const nearEndY = boxesEntries
-				.filter(([, box]) => {
-					return (
+				.filter(
+					([, box]) =>
 						box.y - box.height / 2 <=
 							y + height / 2 + snapDistance &&
 						box.y - box.height / 2 >=
 							y + height / 2 - snapDistance &&
 						box.x >= x - snapDistance &&
 						box.x <= x + snapDistance
-					)
-				})
+				)
 				.sort((a, b) => a[1].y - b[1].y)[0] as
 				| [string, IBox]
 				| undefined
