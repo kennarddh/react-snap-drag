@@ -41,9 +41,6 @@ const App: FC = () => {
 
 			const { x, y, width, height } = BoxesRef.current[item.id]
 
-			const endX = x + width
-			const endY = y + height
-
 			const boxesEntries = Object.entries(BoxesRef.current).filter(
 				([id]) => id !== item.id
 			)
