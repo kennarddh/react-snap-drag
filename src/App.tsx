@@ -114,50 +114,35 @@ const App: FC = () => {
 				| [string, IBox]
 				| undefined
 
-			if (nearCenter) {
-				UpdateBox(item.id, {
+			if (nearCenter)
+				return UpdateBox(item.id, {
 					x: nearCenter[1].x,
 					y: nearCenter[1].y,
 				})
 
-				return
-			}
-
-			if (nearX) {
-				UpdateBox(item.id, prev => ({
+			if (nearX)
+				return UpdateBox(item.id, prev => ({
 					x: nearX[1].x + nearX[1].width / 2 + prev.width / 2,
 					y: nearX[1].y,
 				}))
 
-				return
-			}
-
-			if (nearEndX) {
-				UpdateBox(item.id, prev => ({
+			if (nearEndX)
+				return UpdateBox(item.id, prev => ({
 					x: nearEndX[1].x - prev.width / 2 - nearEndX[1].width / 2,
 					y: nearEndX[1].y,
 				}))
 
-				return
-			}
-
-			if (nearY) {
-				UpdateBox(item.id, prev => ({
+			if (nearY)
+				return UpdateBox(item.id, prev => ({
 					x: nearY[1].x,
 					y: nearY[1].y + nearY[1].height / 2 + prev.height / 2,
 				}))
 
-				return
-			}
-
-			if (nearEndY) {
-				UpdateBox(item.id, prev => ({
+			if (nearEndY)
+				return UpdateBox(item.id, prev => ({
 					x: nearEndY[1].x,
 					y: nearEndY[1].y - nearEndY[1].height / 2 - prev.height / 2,
 				}))
-
-				return
-			}
 		},
 	}))
 
