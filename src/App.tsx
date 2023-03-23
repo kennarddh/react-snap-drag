@@ -67,9 +67,9 @@ const App: FC = () => {
 						box.y <= y + snapDistance
 					)
 				})
-				.sort(
-					(a, b) => a[1].x + a[1].width / 2 - b[1].x + b[1].width / 2
-				)[0] as [string, IBox] | undefined
+				.sort((a, b) => a[1].x - b[1].x)[0] as
+				| [string, IBox]
+				| undefined
 
 			const nearEndX = boxesEntries
 				.filter(([, box]) => {
@@ -80,9 +80,9 @@ const App: FC = () => {
 						box.y <= y + snapDistance
 					)
 				})
-				.sort(
-					(a, b) => a[1].x + a[1].width / 2 - b[1].x + b[1].width / 2
-				)[0] as [string, IBox] | undefined
+				.sort((a, b) => a[1].x - b[1].x)[0] as
+				| [string, IBox]
+				| undefined
 
 			const nearY = boxesEntries
 				.filter(([, box]) => {
@@ -95,10 +95,9 @@ const App: FC = () => {
 						box.x <= x + snapDistance
 					)
 				})
-				.sort(
-					(a, b) =>
-						a[1].y + a[1].height / 2 - b[1].y + b[1].height / 2
-				)[0] as [string, IBox] | undefined
+				.sort((a, b) => a[1].y - b[1].y)[0] as
+				| [string, IBox]
+				| undefined
 
 			const nearEndY = boxesEntries
 				.filter(([, box]) => {
@@ -111,10 +110,9 @@ const App: FC = () => {
 						box.x <= x + snapDistance
 					)
 				})
-				.sort(
-					(a, b) =>
-						a[1].y + a[1].height / 2 - b[1].y + b[1].height / 2
-				)[0] as [string, IBox] | undefined
+				.sort((a, b) => a[1].y - b[1].y)[0] as
+				| [string, IBox]
+				| undefined
 
 			if (nearCenter) {
 				UpdateBox(item.id, {
