@@ -39,20 +39,20 @@ const BoxesContext = createContext<IBoxesContext>({
 export const BoxesProvider: FC<{ children: ReactNode }> = ({ children }) => {
 	const [Boxes, SetBoxes] = useState<Record<string, IBox>>({
 		'813ea7e5-6768-42ed-a037-2abda5c59984': {
-			x: 100,
-			y: 100,
+			x: 200,
+			y: 200,
 			width: 200,
 			height: 200,
 		},
 		'741fca7d-3788-4c48-a5cc-fc3b2e34b237': {
-			x: 400,
-			y: 100,
+			x: 500,
+			y: 200,
 			width: 200,
 			height: 200,
 		},
 		'9168b9ed-1306-4318-b905-bd4dd39fc7cb': {
-			x: 700,
-			y: 100,
+			x: 800,
+			y: 200,
 			width: 100,
 			height: 100,
 		},

@@ -44,34 +44,28 @@ const App: FC = () => {
 			const endX = x + width
 			const endY = y + height
 
-			const centerX = x + width / 2
-			const centerY = y + height / 2
-
 			const boxesEntries = Object.entries(BoxesRef.current).filter(
 				([id]) => id !== item.id
 			)
 
 			const nearCenter = boxesEntries
 				.filter(([, box]) => {
-					const targetCenterX = box.x + box.width / 2
-					const targetCenterY = box.y + box.height / 2
-
 					return (
-						centerX >= targetCenterX - snapDistance &&
-						centerX <= targetCenterX + snapDistance &&
-						centerY >= targetCenterY - snapDistance &&
-						centerY <= targetCenterY + snapDistance
+						x >= box.x - snapDistance &&
+						x <= box.x + snapDistance &&
+						y >= box.y - snapDistance &&
+						y <= box.y + snapDistance
 					)
 				})
-				.sort(
-					(a, b) => a[1].x + a[1].width / 2 - b[1].x + b[1].width / 2
-				)[0] as [string, IBox] | undefined
+				.sort((a, b) => a[1].x - b[1].x)[0] as
+				| [string, IBox]
+				| undefined
 
 			const nearX = boxesEntries
 				.filter(([, box]) => {
 					return (
-						box.x + box.width <= x + snapDistance &&
-						box.x + box.width >= x - snapDistance &&
+						box.x + box.width / 2 <= x - width / 2 + snapDistance &&
+						box.x + box.width / 2 >= x - width / 2 - snapDistance &&
 						box.y >= y - snapDistance &&
 						box.y <= y + snapDistance
 					)
@@ -83,8 +77,8 @@ const App: FC = () => {
 			const nearEndX = boxesEntries
 				.filter(([, box]) => {
 					return (
-						box.x >= endX - snapDistance &&
-						box.x <= endX + snapDistance &&
+						box.x - box.width / 2 >= x + width / 2 - snapDistance &&
+						box.x - box.width / 2 <= x + width / 2 + snapDistance &&
 						box.y >= y - snapDistance &&
 						box.y <= y + snapDistance
 					)
@@ -96,8 +90,10 @@ const App: FC = () => {
 			const nearY = boxesEntries
 				.filter(([, box]) => {
 					return (
-						box.y + box.height <= y + snapDistance &&
-						box.y + box.height >= y - snapDistance &&
+						box.y + box.height / 2 <=
+							y - height / 2 + snapDistance &&
+						box.y + box.height / 2 >=
+							y - height / 2 - snapDistance &&
 						box.x >= x - snapDistance &&
 						box.x <= x + snapDistance
 					)
@@ -110,8 +106,10 @@ const App: FC = () => {
 			const nearEndY = boxesEntries
 				.filter(([, box]) => {
 					return (
-						box.y >= endY - snapDistance &&
-						box.y <= endY + snapDistance &&
+						box.y - box.height / 2 <=
+							y + height / 2 + snapDistance &&
+						box.y - box.height / 2 >=
+							y + height / 2 - snapDistance &&
 						box.x >= x - snapDistance &&
 						box.x <= x + snapDistance
 					)
@@ -121,35 +119,27 @@ const App: FC = () => {
 						a[1].y + a[1].height / 2 - b[1].y + b[1].height / 2
 				)[0] as [string, IBox] | undefined
 
-			console.log({ nearCenter, nearX, nearEndX, nearY, nearEndY })
-
 			if (nearCenter) {
-				UpdateBox(item.id, prev => ({
-					x:
-						nearCenter[1].x +
-						nearCenter[1].width / 2 -
-						prev.width / 2,
-					y:
-						nearCenter[1].y +
-						nearCenter[1].height / 2 -
-						prev.height / 2,
-				}))
+				UpdateBox(item.id, {
+					x: nearCenter[1].x,
+					y: nearCenter[1].y,
+				})
 
 				return
 			}
 
 			if (nearX) {
-				UpdateBox(item.id, {
-					x: nearX[1].x + nearX[1].width,
+				UpdateBox(item.id, prev => ({
+					x: nearX[1].x + nearX[1].width / 2 + prev.width / 2,
 					y: nearX[1].y,
-				})
+				}))
 
 				return
 			}
 
 			if (nearEndX) {
 				UpdateBox(item.id, prev => ({
-					x: nearEndX[1].x - prev.width,
+					x: nearEndX[1].x - prev.width / 2 - nearEndX[1].width / 2,
 					y: nearEndX[1].y,
 				}))
 
@@ -157,19 +147,19 @@ const App: FC = () => {
 			}
 
 			if (nearY) {
-				UpdateBox(item.id, {
+				UpdateBox(item.id, prev => ({
 					x: nearY[1].x,
-					y: nearY[1].y + nearY[1].height,
-				})
+					y: nearY[1].y + nearY[1].height / 2 + prev.height / 2,
+				}))
 
 				return
 			}
 
 			if (nearEndY) {
-				UpdateBox(item.id, {
+				UpdateBox(item.id, prev => ({
 					x: nearEndY[1].x,
-					y: nearEndY[1].y - nearEndY[1].height,
-				})
+					y: nearEndY[1].y - nearEndY[1].height / 2 - prev.height / 2,
+				}))
 
 				return
 			}

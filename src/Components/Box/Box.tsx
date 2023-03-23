@@ -24,8 +24,8 @@ const Box: FC<{ id: string }> = ({ id }) => {
 		<Container
 			ref={drag}
 			style={{
-				top: Boxes[id].y,
-				left: Boxes[id].x,
+				top: Boxes[id].y - Boxes[id].height / 2,
+				left: Boxes[id].x - Boxes[id].width / 2,
 				width: Boxes[id].width,
 				height: Boxes[id].height,
 			}}
